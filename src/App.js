@@ -1,32 +1,50 @@
-import { useState } from 'react';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { useMemo, useState } from 'react';
+import { Container, Row, Col, Form, Button} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-function parseCommand(text) {
-    let parsed = text.split('\n');
-    let newList = "";
-    parsed.map(line => {
-    if (line.includes("Received message from entity")){
-        newList+= line.match(/(?<=\bCommandString:\s)(.*)/g)
-        }
-    })
-    return newList
+const modifyArray = (array, num) => {
+  let index = array.indexOf(num);
+  if (index > -1) { // only splice array when item is found
+    array.splice(index, 1); // 2nd parameter means remove one item only
+  }
+  return array;
 }
 
-function parseChat(text) {
+const parseFile = (text, filters) => {
     let parsed = text.split('\n');
-    let newList = "";
+    let newList = [];
     parsed.map(line => {
-        if (line.includes("Received message from entity")){
-            newList+= line.match(/(?<=\bplayer\s)(\w+)/g) + ":"+ line.split(":")[4]+"<br />";
-        }
+      if (filters.includes("chat") && line.includes("Received message from entity")){
+        newList.push( line.match(/(?<=\bplayer\s)(\w+)/g) + ":"+ line.split(":")[4]);
+      }
+      if (filters.includes("command") && line.includes("CommandString")){
+        newList.push(line.match(/(?<=\bCommandString:\s)(.*)/g))
+      }
     })
     return newList
-}
+  }
 
 function App() {
 
   const [file, setFile] = useState();
+  const [filter, setFilter] = useState([]);
+  const [updated, setUpdated] = useState("");
+
+  const updateFilter = (keyword, addOrRemove) => {
+    let newFilter = filter;
+    if (addOrRemove) {
+      newFilter.push(keyword)
+    }
+    else {
+      newFilter = modifyArray(newFilter, keyword)
+    }
+
+    setFilter(newFilter);
+    setUpdated(Math.random().toString(36).substring(2,7))
+  }
+
+  const fileText = useMemo(() => file && parseFile(file, filter), [updated, file, filter]);
 
   const reader = new FileReader();
 
@@ -50,15 +68,38 @@ function App() {
           <Col>
             <h1>Northstar Logging Utility</h1>
           </Col>
+        </Row>
+        <Row>
           <Col>
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Default file input example</Form.Label>
               <Form.Control type="file" onChange={e => getFile(e)} />
             </Form.Group>
           </Col>
-          <Col>
-            {parseChat(file)}            
+          <Col md={6} class="d-flex display-row">
+            <Form.Check 
+              type="checkbox"
+              id="chat-check"
+              label="Chat"
+              onClick={e => updateFilter("chat", e.target.checked)}
+            />
+            <Form.Check 
+              type="checkbox"
+              id="command-check"
+              label="Command"
+              onClick={e => updateFilter("command", e.target.checked)}
+            />
           </Col>
+          <Col md={6}>
+            <Button variant="primary" href={`data:text/plain;charset=utf-8,${encodeURIComponent(fileText)}`} download>Download</Button>
+          </Col>
+          <Row>
+            <Col>
+              {fileText && (fileText).map((line, index) => 
+                <p key={index}>{line}</p>  
+              )}            
+            </Col>
+          </Row>
         </Row>
       </Container>
     </div>
