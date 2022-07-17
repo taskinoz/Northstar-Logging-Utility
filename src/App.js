@@ -27,6 +27,9 @@ const parseFile = (text, filters) => {
       if (filters.includes("spew") && line.includes("[SERVER SPEW_MESSAGE]")) {
         newList.push(line.split("[SERVER SPEW_MESSAGE] ")[1])
       }
+      if (filters.includes("script") && line.includes("[SERVER SCRIPT]")) {
+        newList.push(line.split("[SERVER SCRIPT] ")[1])
+      }
     })
     return newList
   }
@@ -110,6 +113,13 @@ function App() {
               id="spew-check"
               label="Spew Message"
               onClick={e => updateFilter("spew", e.target.checked)}
+            />
+            <Form.Check
+              className="p-4"
+              type="checkbox"
+              id="script-check"
+              label="Script Message"
+              onClick={e => updateFilter("script", e.target.checked)}
             />
           </Col>
           <Col md={6}>
