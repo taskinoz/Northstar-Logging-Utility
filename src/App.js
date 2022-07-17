@@ -18,7 +18,7 @@ const parseFile = (text, filters) => {
       if (filters.includes("chat") && line.includes("Received message from entity")){
         newList.push( line.match(/(?<=\bplayer\s)(\w+)/g) + ":"+ line.split(":")[4]);
       }
-      if (filters.includes("chat-command") && line.includes("Received message from entity") && line.includes(": !") ) {
+      if (!filters.includes("chat") && filters.includes("chat-command") && line.includes("Received message from entity") && line.includes(": !") ) {
         newList.push( line.match(/(?<=\bplayer\s)(\w+)/g) + ":"+ line.split(":")[4]);
       }
       if (filters.includes("command") && line.includes("CommandString")){
