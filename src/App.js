@@ -30,6 +30,9 @@ const parseFile = (text, filters) => {
       if (filters.includes("script") && line.includes("[SERVER SCRIPT]")) {
         newList.push(line.split("[SERVER SCRIPT] ")[1])
       }
+      if (filters.includes("warning") && line.includes("[SERVER SPEW_WARNING]")) {
+        newList.push(line.split("[SERVER SPEW_WARNING] ")[1])
+      }
     })
     return newList
   }
@@ -120,6 +123,13 @@ function App() {
               id="script-check"
               label="Script Message"
               onClick={e => updateFilter("script", e.target.checked)}
+            />
+            <Form.Check
+              className="p-4"
+              type="checkbox"
+              id="warning-check"
+              label="Warning Message"
+              onClick={e => updateFilter("warning", e.target.checked)}
             />
           </Col>
           <Col md={6}>
