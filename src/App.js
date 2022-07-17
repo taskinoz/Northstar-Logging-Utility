@@ -24,6 +24,9 @@ const parseFile = (text, filters) => {
       if (filters.includes("command") && line.includes("CommandString")){
         newList.push(line.match(/(?<=\bCommandString:\s)(.*)/g))
       }
+      if (filters.includes("spew") && line.includes("[SERVER SPEW_MESSAGE]")) {
+        newList.push(line.split("[SERVER SPEW_MESSAGE] ")[1])
+      }
     })
     return newList
   }
@@ -75,7 +78,7 @@ function App() {
         <Row>
           <Col>
             <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Default file input example</Form.Label>
+              <Form.Label>Select your Northstar log</Form.Label>
               <Form.Control type="file" onChange={e => getFile(e)} />
             </Form.Group>
           </Col>
@@ -101,9 +104,18 @@ function App() {
               label="Command"
               onClick={e => updateFilter("command", e.target.checked)}
             />
+            <Form.Check
+              className="p-4"
+              type="checkbox"
+              id="spew-check"
+              label="Spew Message"
+              onClick={e => updateFilter("spew", e.target.checked)}
+            />
           </Col>
           <Col md={6}>
-            {fileText && <Button variant="primary" href={`data:text/plain;charset=utf-8,${encodeURIComponent(fileText)}`} download>Download</Button>}
+            {fileText && filter.length > 0 && 
+              <Button variant="primary" href={`data:text/plain;charset=utf-8,${encodeURIComponent(fileText)}`} download>Download</Button>
+            }
           </Col>
           <Row>
             <Col>
