@@ -18,6 +18,9 @@ const parseFile = (text, filters) => {
       if (filters.includes("chat") && line.includes("Received message from entity")){
         newList.push( line.match(/(?<=\bplayer\s)(\w+)/g) + ":"+ line.split(":")[4]);
       }
+      if (filters.includes("chat-command") && line.includes("Received message from entity") && line.includes(": !") ) {
+        newList.push( line.match(/(?<=\bplayer\s)(\w+)/g) + ":"+ line.split(":")[4]);
+      }
       if (filters.includes("command") && line.includes("CommandString")){
         newList.push(line.match(/(?<=\bCommandString:\s)(.*)/g))
       }
@@ -76,14 +79,23 @@ function App() {
               <Form.Control type="file" onChange={e => getFile(e)} />
             </Form.Group>
           </Col>
-          <Col md={6} class="d-flex display-row">
-            <Form.Check 
+          <Col md={6} className="d-flex align-items-center justify-content-end">
+            <Form.Check
+              className="p-4"
               type="checkbox"
               id="chat-check"
               label="Chat"
               onClick={e => updateFilter("chat", e.target.checked)}
             />
-            <Form.Check 
+            <Form.Check
+              className="p-4"
+              type="checkbox"
+              id="command-check"
+              label="Chat Command"
+              onClick={e => updateFilter("chat-command", e.target.checked)}
+            />
+            <Form.Check
+              className="p-4"
               type="checkbox"
               id="command-check"
               label="Command"
@@ -91,7 +103,7 @@ function App() {
             />
           </Col>
           <Col md={6}>
-            <Button variant="primary" href={`data:text/plain;charset=utf-8,${encodeURIComponent(fileText)}`} download>Download</Button>
+            {fileText && <Button variant="primary" href={`data:text/plain;charset=utf-8,${encodeURIComponent(fileText)}`} download>Download</Button>}
           </Col>
           <Row>
             <Col>
