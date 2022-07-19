@@ -82,13 +82,13 @@ function App() {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className='d-flex'>
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Select your Northstar log</Form.Label>
               <Form.Control type="file" onChange={e => getFile(e)} />
             </Form.Group>
           </Col>
-          <Col md={6} className="d-flex align-items-center justify-content-end">
+          <Col md={6} className="d-flex justify-content-end">
             <Form.Check
               className="p-4"
               type="checkbox"
