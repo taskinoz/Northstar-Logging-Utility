@@ -138,7 +138,7 @@ function App() {
             }
           </Col>
           <Row>
-            <Col className='text-container'>
+            <Col className={fileText ? 'text-container' : ''}>
               {fileText && (fileText).map((line, index) => 
                 <p key={index}>{line}</p>  
               )}            
