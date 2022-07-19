@@ -77,7 +77,7 @@ function App() {
     <div className="App">
       <Container>
         <Row>
-          <Col>
+          <Col className='p-3'>
             <h1>Northstar Logging Utility</h1>
           </Col>
         </Row>
@@ -138,7 +138,7 @@ function App() {
             }
           </Col>
           <Row>
-            <Col>
+            <Col className='text-container'>
               {fileText && (fileText).map((line, index) => 
                 <p key={index}>{line}</p>  
               )}            
