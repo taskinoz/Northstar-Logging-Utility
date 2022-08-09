@@ -33,6 +33,9 @@ const parseFile = (text, filters) => {
       if (filters.includes("warning") && line.includes("[SERVER SPEW_WARNING]")) {
         newList.push(line.split("[SERVER SPEW_WARNING] ")[1])
       }
+      if (filters.includes("connections") && (line.includes(" # ") || line.includes("[::"))){
+        newList.push(line.match(/#\s\d(.*)/g) || line.match(/\[info\](.*)/g))
+      }
     })
     return newList
   }
@@ -130,6 +133,13 @@ function App() {
               id="warning-check"
               label="Warning Message"
               onClick={e => updateFilter("warning", e.target.checked)}
+            />
+            <Form.Check
+              className="p-4"
+              type="checkbox"
+              id="connection-check"
+              label="Connections"
+              onClick={e => updateFilter("connections", e.target.checked)}
             />
           </Col>
           <Col md={6}>
