@@ -1,12 +1,21 @@
-.App h1 {
-  text-align: center;
-}
-
-.text-container {
-  border: 1px solid #ccc;
-  margin: 20px 0;
-  padding: 10px;
-}
-.text-container p {
-  margin-bottom: 0 !important;
+.app-shell { min-height: 100vh; background: var(--bs-tertiary-bg); color: var(--bs-body-color); padding-bottom: 3rem; transition: background-color .2s ease, color .2s ease; }
+.app-header { align-items: center; display: grid; grid-template-columns: 1fr auto; }
+.header-copy { grid-column: 1; justify-self: center; }
+.theme-toggle { align-items: center; display: inline-flex; gap: .4rem; grid-column: 2; }
+.upload-panel, .filter-panel { background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); border-radius: .5rem; margin-bottom: 1rem; padding: 1rem; }
+.filter-grid { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.results-toolbar { align-items: center; display: flex; justify-content: space-between; margin: 1.5rem 0 1rem; }
+.match-card { margin-bottom: 1rem; }
+.match-header { align-items: center; display: flex; flex-wrap: wrap; gap: .75rem; justify-content: space-between; }
+.match-time { color: var(--bs-secondary-color); display: block; font-size: .875rem; margin-top: .15rem; }
+.players { align-items: center; display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .75rem; }
+.log-lines { background: #111827; border-radius: .35rem; color: #e5e7eb; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; max-height: 28rem; overflow: auto; padding: .75rem; }
+.log-lines p { margin: 0; overflow-wrap: anywhere; }
+.log-lines time { color: #93c5fd; margin-right: .75rem; }
+.log-lines .truncated-message { border-top: 1px solid #374151; color: #fbbf24; margin-top: .75rem; padding-top: .75rem; }
+.empty-state { background: var(--bs-body-bg); border: 1px dashed var(--bs-secondary-color); border-radius: .5rem; color: var(--bs-secondary-color); padding: 2rem; text-align: center; }
+@media (max-width: 575px) {
+  .app-header { gap: 1rem; grid-template-columns: 1fr; }
+  .header-copy, .theme-toggle { grid-column: 1; }
+  .theme-toggle { justify-self: center; }
 }
